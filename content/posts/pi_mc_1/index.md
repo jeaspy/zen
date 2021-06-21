@@ -340,7 +340,7 @@ Pour construire 6 points, la disposition suivante en deux tableaux est possible,
 r_1 & r_2 & r_3\\
 r_4 & r_5 & r_6
 \end{array} \right]
-\,
+\;
 \textnormal{Y} = \left[ \begin{array}
 {lll}
 r_7 & r_8 & r_9 \\
