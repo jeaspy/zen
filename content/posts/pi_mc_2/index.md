@@ -32,7 +32,7 @@ Le script permet de modifier certains paramètres&nbsp;: le nombre total de poin
 D’autres explications sont données directement sous forme de commentaires dans le code. 
 
 Voici un aperçu du résultat, avec ici 10&#8239;000 points placés par groupes de 40 avec un intervalle de 80 ms&nbsp;: 
-<div style="width: 75%; overflow: hidden;">
+<div style="width: 100%; overflow: hidden;">
 <video style="width: 100%;" controls autoplay muted>
     <source src="pi_target.mp4" type="video/mp4">
     Your browser does not support the video tag.  
