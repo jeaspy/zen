@@ -334,7 +334,7 @@ Chaque point étant représenté par deux coordonnées du plan x et y, il faut d
 
 Pour construire 6 points, la disposition suivante en deux tableaux est possible, l’un pour les abscisses, l’autre pour les ordonnées&nbsp;:
 
-{{< raw >}}\(
+{{< raw >}}\[
 \textnormal{X} = \left[ \begin{array}
 {lll}
 r_1 & r_2 & r_3\\
@@ -346,7 +346,7 @@ r_4 & r_5 & r_6
 r_7 & r_8 & r_9 \\
 r_{10} & r_{11} & r_{12}
 \end{array} \right] 
-\){{< /raw >}}
+\]{{< /raw >}}
 
 L’ordre dans lequel seront enregistrés les éléments de la suite aléatoire {{< raw >}}\((r_1, r_2, r_3,...)\){{< /raw >}} est celui qui est naturellement suivi par NumPy si on lui donne les instructions ```X = rng.random((2, 3))``` et ```Y = rng.random((2, 3))```. Dans ce cas, il remplira les deux tableaux, l’un après l’autre, ligne par ligne. Les nombres de la suite aléatoire seront donc rangés dans l’ordre indiqué ci-dessus.
 
