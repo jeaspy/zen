@@ -32,7 +32,8 @@ Le script permet de modifier certains paramètres&nbsp;: le nombre total de poin
 D’autres explications sont données directement sous forme de commentaires dans le code. 
 
 Voici un aperçu du résultat, avec ici 10&#8239;000 points placés par groupes de 40 avec un intervalle de 80 ms&nbsp;: 
-<div style="width: 100%; overflow: hidden;">
+
+<div class="variable">
 <video style="width: 100%;" controls autoplay muted>
     <source src="pi_target.mp4" type="video/mp4">
     Your browser does not support the video tag.  
@@ -166,7 +167,7 @@ Cette animation permet donc d’observer en temps réel la convergence vers {{< 
 
 Voici par exemple le moment où {{< raw >}}\(\pi_{mc}\){{< /raw >}} atteint une précision de 15 décimales exactes. Nous verrons plus loin comment découvrir de telles perles et comment programmer le PRNG pour l’amener sur ces records.
 
-<div style="width: 100%; overflow: hidden;">
+<div style="max-width: 100%; overflow: hidden;">
 <video style="width: 100%;" controls autoplay muted>
     <source src="plotting_pi.mp4" type="video/mp4">
     Your browser does not support the video tag.

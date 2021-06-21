@@ -193,10 +193,17 @@ summary {
   font-size: 1.1em;
 }
 
+div.variable {
+  width: 100%; 
+  overflow: hidden;
+}
 @media only screen and (min-width: 40.063em) {
 figure.small {
   float: left;
   width: 30%;
+}
+div.variable {
+  width: 80%; 
 }
 .card-img {
   /*width: 18.4em;*/
