@@ -341,11 +341,11 @@ r_1 & r_2 & r_3\\
 r_4 & r_5 & r_6
 \end{array} \right]
 \quad
-\textnormal{Y} = \left[\begin{array}
+\textnormal{Y} = \left[ \begin{array}
 {lll}
 r_7 & r_8 & r_9 \\
 r_{10} & r_{11} & r_{12}
-\end{array}\right] 
+\end{array} \right] 
 \]{{< /raw >}}
 
 L’ordre dans lequel seront enregistrés les éléments de la suite aléatoire {{< raw >}}\((r_1, r_2, r_3,...)\){{< /raw >}} est celui qui est naturellement suivi par NumPy si on lui donne les instructions ```X = rng.random((2, 3))``` et ```Y = rng.random((2, 3))```. Dans ce cas, il remplira les deux tableaux, l’un après l’autre, ligne par ligne. Les nombres de la suite aléatoire seront donc rangés dans l’ordre indiqué ci-dessus.
@@ -359,13 +359,13 @@ Cette construction ne présente pas de problème particulier et semble même ass
 {lll}
 r_1 & r_2\\
 r_3 & r_4
-\end{array}\right]
+\end{array} \right]
 \quad
 \textnormal{Y} = \left[\begin{array}
 {lll}
 r_5 & r_6\\
 r_7 & r_8
-\end{array}\right]
+\end{array} \right]
 \]{{< /raw >}}
 
 Cette fois, on a {{< raw >}}\(P_1(r_1, r_5)\){{< /raw >}}, puis {{< raw >}}\(P_2(r_2, r_6), P_3(r_3, r_7)\){{< /raw >}} et {{< raw >}}\(P_4(r_4, r_8)\){{< /raw >}}. Autrement dit, ce ne seront pas les mêmes points que ceux du modèle précédent puisque la taille des tableaux ayant été modifiée, les associations formant les paires (x, y) ne sont pas les mêmes.
