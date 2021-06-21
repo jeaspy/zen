@@ -1,0 +1,96 @@
+baseURL = "https://jeaspy.netlify.app/"
+languageCode = "fr-fr"
+defaultContentLanguage = "fr"
+title = "Jeaspy - Programmes en Python"
+
+theme = "aether"
+
+
+[params]
+    #github = "https://github.com/"
+    brand = "Ph'nglui mglw'nafh"
+    #homeimg = "img/frame5.png"
+    #homeimg = "img/home/mochaGrunge.png"
+    description = "Programmes en langage Python avec NumPy et Matplotlib. Pi, méthode de Monte-Carlo, stéganographie."
+    #headshotimg = "img/faceshot.jpg"
+
+    #bgimg = "img/herringbone.png"
+    #bgimg = "img/sakura.png"
+    #bgimg = "img/spikes.png"
+    #bgimg = "img/vichy.png"
+    #bgimg = "img/circuit.png"
+    #bgimg = "img/country-quilt.png"
+    #bgimg = "img/folk-pattern.png"
+    #bgimg = "img/full-bloom.png"
+    #bgimg = "img/hoffman.png"
+    #bgimg = "img/nasty_fabric.png"
+    #bgimg = "img/positive.png"
+    #bgimg = "img/pow-star.png"
+    #bgimg = "img/regal.png"
+    #bgimg = "img/round.png"
+    #bgimg = "img/so-white.png"
+    #bgimg = "img/subtle_orange_emboss.png"
+    #bgimg = "img/swirl_pattern.png"
+    #bgimg = "img/symphony.png"
+    #bgimg = "img/what-the-hex.png"
+    #bgimg = "img/white_brick_wall.png"
+    #bgimg = "img/xv.png"
+
+
+    #bgimg = "img/home/dot-grid.png"
+    #bgimg = "img/home/concrete.png"
+    #bgimg = "img/home/green_cup.png"
+    #bgimg = "img/home/pink_rice.png"
+    #bgimg = "img/home/farmer.png"
+    bgimg = "img/home/hip-square.png"
+    #bgimg = "img/home/ice_age.png"
+    #bgimg = "img/home/ignasi_pattern.png"
+    #bgimg = "img/home/memphis-colorful.png"
+    #bgimg = "img/home/mochaGrunge.png"
+    #bgimg = "img/home/old_mathematics.png"
+    #bgimg = "img/home/paisley.png"
+    #bgimg = "img/home/old_map.png"
+    #bgimg = "img/homa/shattered.png"
+    #bgimg = "img/home/otis_redding.png"
+    #bgimg = "img/home/pattern.png"
+    #bgimg = "img/home/ricepaper.png"
+    #bgimg = "img/home/ricepaper2.png"
+    #bgimg = "img/home/skulls.png"
+    #bgimg = "img/home/paper.png"
+    #bgimg = "img/home/embossed-diamond.png"
+    #bgimg = "img/home/white_plaster.png"
+    #bgimg = "img/home/paper_2.png"
+    #bgimg = "img/home/symphony.png"
+    #bgimg = "img/home/batthern.png"
+    #bgimg = "img/home/white.png"
+    #bgimg = "img/home/45degreee_fabric.png"
+    #bgimg = "img/home/circles-and-roundabout.png"
+    #bgimg = "img/home/geometry.png"
+    #bgimg = "img/home/graphy.png"
+
+    #bgimg = "img/home/paper_1.png"
+    #bgimg = "img/home/felt.png"
+    #bgimg = "img/home/snow.png"
+    #bgimg = "img/home/green_dust_scratch.png"
+    #bgimg = "img/home/handmadepaper.png"
+    
+    #bgimg = "img/home/concrete-texture.png"
+    #bgimg = "img/home/ep_naturalwhite.png"
+    
+    
+
+  [markup.goldmark.renderer]
+    unsafe = true
+
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ""
+    lineAnchors = ""
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = false
+    noClasses = true
+    style = "pygments" # was vs pastie monokailight bw arduino igor tango emacs manni perldoc murphy rainbow_dash xcode
+    tabWidth = 4

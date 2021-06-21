@@ -1,0 +1,213 @@
+/*
+  * To override CSS, you should create
+  * project_root/assets/css/override.css
+  * and place all your CSS inside it.
+  * You should not modify this file.
+  */
+
+h1 {
+  font-size: 1.17em;
+  font-weight: normal;
+  color:#8c6d8c;
+}
+
+  h4.cool{
+    display: inline !important;
+  }
+  body {
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    color: #1d2b36;
+    }
+    
+video {
+  /* override other styles to make responsive */
+  width: 100%    !important;
+  height: auto   !important;
+}
+
+.lettrine{
+  font-family: Georgia, serif;
+  float       : left;
+  font-size   : 3.26em;
+  line-height : 0.5;
+  margin      : 0.205em 0.153em 0 0;
+}
+
+/*
+.lettrine + span{
+  margin-left : -0.5em;
+}
+*/
+.card-img-overlay2 {
+  border-radius: 0.8rem 0.8rem 0 0;
+  position: absolute;
+  top: 0;
+  font-size: 1.27em;
+  text-align: center;
+  /*padding: 0.77em 0;*/
+  padding: 0.87em 0;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 5;
+}
+
+
+code {
+      border-radius: 50% 20% / 10% 40%;
+      /*background-color: #e0d9de;*/
+      /*background-color: #e2e5ea;*/
+      background-color: #eee;
+  }
+pre.sortie {
+      margin: 1.5em 0;
+      display: block;
+      padding: 0.5em;
+      word-break: normal;
+      overflow-x: auto;
+      line-height: 1.5;
+      border-radius: 0rem;
+      background-color: #f5f6f7;
+      color: #75715e;
+  }
+pre > code {
+      border-radius: 0;
+      background-color: #eee;
+      border-left-width: 5px;
+      border-left-style: solid;
+      border-color: #3d7e9a;
+  }
+.post-title {
+      font-size:1.4em;
+      color:#8c6d8c;
+      line-height: 1.2;
+      margin: 0 0 0.2em 0;
+}
+
+table {
+    line-height: 1.2;
+}
+th {
+  background-color: #e7e9ec;
+  font-weight: normal;
+}
+  .content {
+    margin-top: 3rem;
+    border-radius:0;
+    padding: 2em 0 0 0;
+    margin-bottom: 3rem;
+    width: 100%;
+    max-width: 61rem; /* origine 51rem */
+  }
+
+pre,
+code,
+kbd,
+td,
+samp,
+tt{
+  font-family:monospace,monospace;
+  font-size:0.9rem;
+}
+th, td {
+  font-size: small;
+}
+  .card-container {
+      max-width: 58rem; /*origine 48rem */
+  }
+  .end-nav {
+      max-width: 58rem; /*origine 48rem */
+  }
+  .hamburger-menu-open .hamburger-menu-overlay {
+      opacity: .85; /* origine .9 */
+  }
+  .nav-text {
+      color:#8c6d8c;
+  }
+  .card {
+      background-color:#f9f9f9;
+  }
+  .home-card {
+    padding: 0;
+    font-size: 6em;
+    color: "white";
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .post {
+      line-height: 160%;
+  }
+  .content a {
+      color: #0072aa;
+      /*color: #3d7e9a;*/
+      text-decoration: none;
+  }
+
+  /*.content a:visited {
+      color: #6363bb;
+      text-decoration: none;
+  }*/
+
+  .content a:hover {
+      color: #00B0E4;
+      color:#ff4b33;
+      text-decoration: underline;
+  }
+
+figure.small {
+margin: 0 1.5em 1.5em 0;
+float: none;
+max-width: 100%;
+line-height: 100%;
+text-align: center;
+font-style: italic;
+font-size: small;
+}
+
+.carre{
+display: inline-block;
+vertical-align: top;
+width: 20px;
+height: 20px;
+margin: auto 4px;
+}
+
+details {
+  background: #ece5e9;
+  border:1px dotted #8a8a96;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 5px;
+  font-size: smaller;
+}
+
+summary {
+  cursor: pointer;
+  color: #67896c;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+@media only screen and (min-width: 40.063em) {
+figure.small {
+  float: left;
+  width: 30%;
+}
+.card-img {
+  /*width: 18.4em;*/
+  width: 22em;
+}
+body {
+  font-size: 1rem; /* origine 1.15rem */
+}
+th, td {
+  font-size: 0.9rem;
+}
+
+.card-img-overlay2 {
+  border-radius: 0.8rem 0.8rem 0 0;
+}
+}
