@@ -32,7 +32,11 @@ En effet, la surface du quart de disque est {{< raw >}}\(A_d=\dfrac{\pi \times r
 Le rapport entre le nombre de points placés dans le disque et le nombre total tend vers le rapport des aires, soit {{< raw >}}\(\dfrac{\pi}{4}\){{< /raw >}}, quand le nombre de points tend vers l’infini. L’approximation est d’autant plus précise que nombre de tirages est grand.
 
 Une variante consiste à inscrire un disque complet centré en (0, 0) dans un carré de côté 2. Les coordonnées des points sont alors comprises entre -1 et 1. Le résultat est le même puisque les rapports des surfaces sont identiques&nbsp;: 
-<img src="schema.png" alt="schéma disque et quart de disque" style='max-width:1000px;'/>
+
+<picture>
+<source srcset="schema.png" media="(min-width: 40.063em)" />
+<img src="schema2.png" />
+</picture>
 
 #### Choix d’un algorithme
 
