@@ -327,7 +327,7 @@ def get_new_pi():
     pi_mc = (4 * D(int(nb_cible))/D(nb_total)).quantize(D(pi_ref))
     return pi_mc
 
-def set_colors(cols=('m', 'gray'), c_line='#1f77b4'):
+def set_colors(cols=('k', 'gray'), c_line='#1f77b4'):
      """ Couleurs des annotations et de la courbe."""
      line.set_c(c_line)
      for item, col in zip((top, pi_logo), cols):
