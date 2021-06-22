@@ -2,7 +2,7 @@ baseURL = "https://jeaspy.netlify.app/"
 languageCode = "fr-fr"
 defaultContentLanguage = "fr"
 title = "Jeaspy - Programmes en Python"
-
+enableRobotsTXT = true
 theme = "aether"
 
 
