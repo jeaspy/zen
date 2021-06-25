@@ -22,7 +22,7 @@ resources:
 <br>
 
  <span class="lettrine">L</span>es [méthodes de Monte-Carlo](https://fr.wikipedia.org/wiki/M%C3%A9thode_de_Monte-Carlo "Wikipédia : Méthode de Monte-Carlo") sont des algorithmes permettant la résolution de problèmes d’optimisation, d’intégration ou d’échantillonnage. Elles reposent sur le tirage de nombres [pseudo-aléatoires](https://fr.wikipedia.org/wiki/Pseudo-al%C3%A9atoire "Wikipédia : Pseudo-aléatoire") dont l’[espérance](https://fr.wikipedia.org/wiki/Esp%C3%A9rance_math%C3%A9matique "Wikipédia : Espérance mathématique") de la distribution permet de calculer la quantité recherchée.
-{{<smallimg src="quart_cercle.png" alt="Quart de disque" smartfloat="left" width="200px">}}
+{{<smallimg src="quart_cercle.webp" alt="Quart de disque" smartfloat="left" width="200px">}}
 Ainsi, pour obtenir une approximation de [{{< raw >}}\(\pi\){{< /raw >}}](https://fr.wikipedia.org/wiki/Pi "Wikipédia : Pi") on peut tracer aléatoirement des points de coordonnées (x, y) uniformément répartis dans un carré de côté 1. Les coordonnées de chaque point sont des réels compris entre 0 et 1. Les points appartiennent au quart de disque de centre (0, 0) de rayon r = 1 inscrit dans le carré si et seulement si {{< raw >}}\(x^2+y^2\leq1\){{< /raw >}} . 
 
 La probabilité qu’un point appartienne au quart de disque est {{< raw >}}\(\dfrac{\pi}{4}\){{< /raw >}}. 
@@ -34,8 +34,8 @@ Le rapport entre le nombre de points placés dans le disque et le nombre total t
 Une variante consiste à inscrire un disque complet centré en (0, 0) dans un carré de côté 2. Les coordonnées des points sont alors comprises entre -1 et 1. Le résultat est le même puisque les rapports des surfaces sont identiques&nbsp;: 
 
 <picture>
-<source srcset="schema.png" media="(min-width: 40.063em)" />
-<img src="schema2.png" />
+<source srcset="schema.webp" media="(min-width: 40.063em)" />
+<img src="schema2.webp" />
 </picture>
 
 #### Choix d’un algorithme
