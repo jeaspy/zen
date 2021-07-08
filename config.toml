@@ -1,7 +1,7 @@
-baseURL = "https://jeas.io"
+baseURL = "https://jeas.io/"
 languageCode = "fr-fr"
 defaultContentLanguage = "fr"
-title = "Jeaspy - Programmes en Python"
+title = "Jeas - Programmes en Python"
 enableRobotsTXT = true
 theme = "aether"
 
@@ -24,5 +24,5 @@ theme = "aether"
     lineNos = false
     lineNumbersInTable = false
     noClasses = true
-    style = "pygments" # vs pastie monokailight bw arduino igor tango emacs manni perldoc murphy rainbow_dash xcode
+    style = "arduino" # vs pastie monokailight bw arduino igor tango emacs manni perldoc murphy rainbow_dash xcode
     tabWidth = 4
