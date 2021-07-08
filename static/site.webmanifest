@@ -1,6 +1,6 @@
 {
-    "name": "jeaspy",
-    "short_name": "jeaspy",
+    "name": "jeas",
+    "short_name": "jeas",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#bfcac7",
-    "background_color": "#bfcac7",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
     "display": "standalone"
 }
