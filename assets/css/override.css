@@ -10,7 +10,10 @@ h1 {
   font-weight: normal;
   color:#8c6d8c;
 }
-
+.nav-header {
+  font-style: italic;
+  font-size:1.1em;
+}
   h4.cool{
     display: inline !important;
   }
@@ -125,7 +128,8 @@ th, td {
       opacity: .85; /* origine .9 */
   }
   .nav-text {
-      color:#8c6d8c;
+      /*color:#8c6d8c;*/
+      color:gray;
   }
   .card {
       background-color:#f9f9f9;
@@ -218,5 +222,9 @@ th, td {
 
 .card-img-overlay2 {
   border-radius: 0.8rem 0.8rem 0 0;
+}
+.nav-bar {
+  padding-top: 0.8em;
+  padding-bottom: 0;
 }
 }
