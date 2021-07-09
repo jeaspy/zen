@@ -25,5 +25,5 @@ theme = "aether"
     lineNos = false
     lineNumbersInTable = false
     noClasses = true
-    style = "tango" # vs pastie monokailight bw arduino igor tango emacs manni perldoc murphy rainbow_dash xcode
+    style = "arduino" # vs pastie monokailight bw arduino igor tango emacs manni perldoc murphy rainbow_dash xcode
     tabWidth = 4
