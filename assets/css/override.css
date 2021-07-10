@@ -97,13 +97,16 @@ th {
   background-color: #e7e9ec;
   font-weight: normal;
 }
-  .content {
-    margin-top: 3rem;
-    border-radius:0;
-    padding: 2em 0 0 0;
-    margin-bottom: 3rem;
-    width: 100%;
-    max-width: 61rem; /* origine 51rem */
+.side-gutter {
+  margin-top:-2rem;
+}
+.content {
+  margin-top: 1rem;
+  border-radius:0;
+  padding: 2em 0 0 0;
+  margin-bottom: 3rem;
+  width: 100%;
+  max-width: 61rem; /* origine 51rem */
   }
 
 pre,
