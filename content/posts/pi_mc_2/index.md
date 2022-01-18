@@ -27,7 +27,7 @@ resources:
 
 La première permet d’observer le remplissage de la cible et de suivre en temps réel l’approximation de {{< raw >}}\(\pi\){{< /raw >}} qui en résulte. Le calcul est actualisé à chaque intervalle de l’animation.
 
-Le script permet de modifier certains paramètres&nbsp;: le nombre total de points placés (_nb_total_), le nombre de points placés simultanément (_group_), d’exercice l’intervalle des _frames_ (_interval_) qui va régler la vitesse de l’animation, enfin d’autres aspects esthétiques&nbsp;: couleur, symboles (_markers_), transparence.
+Le script permet de modifier certains paramètres&nbsp;: le nombre total de points placés (_nb_total_), le nombre de points placés simultanément (_group_), l’intervalle des _frames_ (_interval_) qui va régler la vitesse de l’animation, enfin d’autres aspects esthétiques&nbsp;: couleur, symboles (_markers_), transparence.
 
 D’autres explications sont données directement sous forme de commentaires dans le code. 
 
