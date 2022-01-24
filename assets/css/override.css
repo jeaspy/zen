@@ -208,6 +208,13 @@ div.variable {
   width: 100%; 
   overflow: hidden;
 }
+
+#valtr-animation {
+	background: #eee;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	max-width: 95%;
+}
 @media only screen and (min-width: 40.063em) {
 figure.small {
   float: left;

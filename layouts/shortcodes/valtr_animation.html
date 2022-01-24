@@ -1,0 +1,690 @@
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript">
+      $(document).ready(function() {
+    var canvas = document.getElementById('valtr-animation');
+    
+    drawStartButton();
+
+    function drawStartButton() {
+        var ctx = canvas.getContext('2d');
+        
+        ctx.fillStyle = 'rgb(225, 0, 76)';
+        ctx.strokeStyle = 'rgb(225, 0, 76)';
+        
+        ctx.beginPath();
+        ctx.arc(canvas.width / 2, canvas.height / 2, 50, 0, 2 * Math.PI);    
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#eee';
+        
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2 - 15, canvas.height / 2 - 20);
+        ctx.lineTo(canvas.width / 2 - 15, canvas.height / 2 + 20);
+        ctx.lineTo(canvas.width / 2 + 25, canvas.height / 2);
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    $('#valtr-animation').click(function() {
+        var startTime = (new Date()).getTime();
+        window.requestAnimationFrame(function() { draw(startTime) });
+    });
+
+    function AlgoStep(duration, description, drawFunction) {
+        this.duration = duration;
+        this.description = description;
+        this.drawFunction = drawFunction;
+    }
+
+    var steps = [
+        new AlgoStep(6000, "Generate random coordinates", drawGenerate),
+        new AlgoStep(3000, "Sort them", drawSort),
+        new AlgoStep(1500, "Isolate extreme points", drawExtreme),
+        new AlgoStep(4500, "Divide into two chains", drawChains),
+        new AlgoStep(6000, "Extract vector components", drawVecComponents),
+        new AlgoStep(6000, "Randomly pair them up", drawShuffle),
+        new AlgoStep(6000, "Combine into vectors", drawCombine),
+        new AlgoStep(6000, "Sort by angle", drawAngleSort),
+        new AlgoStep(6000, "Lay vectors end-to-end", drawAssemble),
+        new AlgoStep(3000, "Move to bounding box", drawTranslate)
+    ];
+
+    var interStepRest = 500;
+
+    function draw(startTime) {
+        var canvas = document.getElementById('valtr-animation');
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+
+        // Figure out which step we're in
+        var time = (new Date()).getTime() - startTime; // milliseconds since start
+
+        var cumDuration = 0;
+        var step = -1;
+
+        while (cumDuration <= time) {
+            step++;
+
+            // Stop if we're past the last step
+            if (step >= steps.length) {
+                drawStartButton();
+                return;
+            }
+
+            cumDuration += steps[step].duration + 2 * interStepRest;
+        }
+
+        // Draw the basic stuff every step needs
+        ctx.fillStyle = 'black';
+        ctx.font = '24px Open Sans';
+        ctx.fillText((step + 1) + '. ' + steps[step].description, 8, 26);
+
+        var stepStart = cumDuration - (steps[step].duration + 2 * interStepRest);
+        var stepTime = time - stepStart;
+
+        if (stepTime < interStepRest) {
+            steps[step].drawFunction(ctx, 0); // Pause before animation
+        } else if (stepTime > interStepRest + steps[step].duration) {
+            steps[step].drawFunction(ctx, 1); // Pause after animation
+        } else {
+            steps[step].drawFunction(ctx, (stepTime - interStepRest) / steps[step].duration); // Animate
+        }
+
+        window.requestAnimationFrame(function() { draw(startTime) });
+    }
+
+    function quadEase(a, b, time) {
+        // interpolates between a and b based on a quadratic ease in and out
+        // time should be between 0 and 1
+        // Function from http://gizma.com/easing/
+        if (time < 0) return a;
+        if (time > 1) return b;
+        
+        time *= 2;
+        if (time < 1) return (b - a)/2 * time * time + a;
+        
+        time--;
+        return (a - b)/2 * (time * (time - 2) - 1) + a;        
+    }
+
+    var topMargin = 50;
+    var leftMargin = 20;
+    var partSize = canvas.width / 2 - 2 * leftMargin;
+    var fixedY = 0.55;
+    var fixedX = 1.75;
+    var radius = 5;
+
+    var xCoords = [0.029634911011715892, 0.14676490716235868, 0.18371855812589577, 0.32859216607395846, 0.43895807650108054, 0.546241778870737, 0.6851275675081777, 0.8690142939640078];
+    var yCoords = [0.07139605490259726, 0.3168908952684609, 0.3406866395998668, 0.8783811430150944, 0.48646128501677623, 0.6270323508082418, 0.7515784358120224, 0.9900354251070969];
+
+    function drawPoint(ctx, x, y) {
+        ctx.beginPath();
+        ctx.arc(leftMargin + x * partSize, topMargin + y * partSize, radius, 0, 2 * Math.PI);    
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    function drawGenerate(ctx, time) {
+        // Fade-in points based on time
+        var timePerPoint = 0.5 * (1 / xCoords.length);
+
+        // Draw all completed points
+        var completePoints = Math.floor(time / timePerPoint);
+
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'black';
+
+        for (i = 0; i < completePoints && i < xCoords.length; i++) {
+            drawPoint(ctx, xCoords[i], fixedY);
+        }
+
+        for (i = 0; i < completePoints - xCoords.length && i < yCoords.length; i++) {
+            drawPoint(ctx, fixedX, yCoords[i]);
+        }
+
+        // Fade in the next point
+        ctx.fillStyle = 'rgba(0, 0, 0, ' + (time - completePoints * timePerPoint) / timePerPoint + ')';
+        ctx.strokeStyle = ctx.fillStyle;
+
+        if (completePoints < xCoords.length) {
+            drawPoint(ctx, xCoords[completePoints], fixedY);
+        } else if (completePoints - xCoords.length < yCoords.length) {
+            drawPoint(ctx, fixedX, yCoords[completePoints - xCoords.length]);
+        }
+    }
+
+    var sortedX = xCoords.slice().sort();
+    var sortedY = yCoords.slice().sort();
+
+    function drawSort(ctx, time) {
+        // Draw all points
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'black';
+
+        for (var i = 0; i < sortedX.length; i++) {
+            drawPoint(ctx, sortedX[i], fixedY);
+        }
+
+        for (i = 0; i < sortedY.length; i++) {
+            drawPoint(ctx, fixedX, sortedY[i]);
+        }
+
+        // Highlight the next point
+        var timePerPoint = 0.5 * (1 / sortedX.length);
+        var currentPoint = Math.floor(time / timePerPoint);
+
+        ctx.fillStyle = 'rgba(0, 0, 0, ' + (time - currentPoint * timePerPoint) / timePerPoint + ')';
+
+        if (currentPoint < sortedX.length) {
+            drawPoint(ctx, sortedX[currentPoint], fixedY);
+        } else if (currentPoint - sortedX.length < sortedY.length) {
+            drawPoint(ctx, fixedX, sortedY[currentPoint - sortedX.length]);
+        }
+    }
+
+    function drawExtreme(ctx, time) {
+        // Draw all points
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'black';
+
+        for (var i = 0; i < sortedX.length; i++) {
+            drawPoint(ctx, sortedX[i], fixedY);
+        }
+
+        for (i = 0; i < sortedY.length; i++) {
+            drawPoint(ctx, fixedX, sortedY[i]);
+        }
+
+        // Highlight extreme points
+        ctx.fillStyle = 'rgba(0, 0, 0, ' + time + ')';
+
+        drawPoint(ctx, sortedX[0], fixedY);
+        drawPoint(ctx, sortedX[sortedX.length - 1], fixedY);
+        drawPoint(ctx, fixedX, sortedY[0]);
+        drawPoint(ctx, fixedX, sortedY[sortedY.length - 1]);
+    }
+
+    var xInTop = [false, true, true, false, true, false];
+    var yInLeft = [false, true, true, true, false, false];
+
+    var topChainY = fixedY - 0.2;
+    var botChainY = fixedY + 0.2;
+
+    var leftChainX = fixedX - 0.2;
+    var rightChainX = fixedX + 0.2;
+
+    function drawLine(ctx, x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(leftMargin + x1 * partSize, topMargin + y1 * partSize);
+        ctx.lineTo(leftMargin + x2 * partSize, topMargin + y2 * partSize);
+        ctx.stroke();
+    }
+
+    function drawChains(ctx, time) {
+        // Draw internal points
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'black';
+        
+        var topYease = quadEase(fixedY, topChainY, time);
+        var botYease = quadEase(fixedY, botChainY, time);
+        var leftXease = quadEase(fixedX, leftChainX, time);
+        var rightXease = quadEase(fixedX, rightChainX, time);
+
+        for (var i = 1; i < sortedX.length - 1; i++) {
+            var y = (xInTop[i - 1] ? topYease : botYease);
+            drawPoint(ctx, sortedX[i], y);
+        }
+
+        for (i = 1; i < sortedY.length - 1; i++) {
+            var x = (yInLeft[i - 1] ? leftXease : rightXease);
+            drawPoint(ctx, x, sortedY[i]);
+        }
+
+        // Draw extreme points
+        ctx.fillStyle = 'black';
+
+        drawPoint(ctx, sortedX[0], topYease);
+        drawPoint(ctx, sortedX[0], botYease);
+
+        drawPoint(ctx, sortedX[sortedX.length - 1], topYease);
+        drawPoint(ctx, sortedX[sortedX.length - 1], botYease);
+
+        drawPoint(ctx, leftXease, sortedY[0]);
+        drawPoint(ctx, rightXease, sortedY[0]);
+
+        drawPoint(ctx, leftXease, sortedY[sortedY.length - 1]);
+        drawPoint(ctx, rightXease, sortedY[sortedY.length - 1]);
+
+        ctx.lineWidth = radius * 0.8;
+
+        drawLine(ctx, sortedX[0], topYease, sortedX[0], botYease);
+        drawLine(ctx, sortedX[sortedX.length - 1], topYease, sortedX[sortedX.length - 1], botYease);
+        drawLine(ctx, leftXease, sortedY[0], rightXease, sortedY[0]);
+        drawLine(ctx, leftXease, sortedY[sortedY.length - 1], rightXease, sortedY[sortedY.length - 1]);
+
+        ctx.lineWidth = 1.0;
+    }
+
+    function drawDividedPoints(ctx, alpha) {
+        // Draw internal points
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + alpha + ')';
+        ctx.strokeStyle = 'rgba(0, 0, 0, ' + alpha + ')';
+
+        for (var i = 1; i < sortedX.length - 1; i++) {
+            drawPoint(ctx, sortedX[i], (xInTop[i - 1] ? topChainY : botChainY));
+        }
+
+        for (i = 1; i < sortedY.length - 1; i++) {
+            drawPoint(ctx, (yInLeft[i - 1] ? leftChainX : rightChainX), sortedY[i]);
+        }
+
+        // Draw extreme points
+        ctx.fillStyle = 'rgba(0, 0, 0, ' + alpha + ')';
+
+        drawPoint(ctx, sortedX[0], topChainY);
+        drawPoint(ctx, sortedX[0], botChainY);
+
+        drawPoint(ctx, sortedX[sortedX.length - 1], topChainY);
+        drawPoint(ctx, sortedX[sortedX.length - 1], botChainY);
+
+        drawPoint(ctx, leftChainX, sortedY[0]);
+        drawPoint(ctx, rightChainX, sortedY[0]);
+
+        drawPoint(ctx, leftChainX, sortedY[sortedY.length - 1]);
+        drawPoint(ctx, rightChainX, sortedY[sortedY.length - 1]);
+
+        ctx.lineWidth = radius * 0.8;
+
+        drawLine(ctx, sortedX[0], topChainY, sortedX[0], botChainY);
+        drawLine(ctx, sortedX[sortedX.length - 1], topChainY, sortedX[sortedX.length - 1], botChainY);
+        drawLine(ctx, leftChainX, sortedY[0], rightChainX, sortedY[0]);
+        drawLine(ctx, leftChainX, sortedY[sortedY.length - 1], rightChainX, sortedY[sortedY.length - 1]);
+
+        ctx.lineWidth = 1.0;
+    }
+
+    var arrowHeadLength = 0.08;
+    var arrowHeadWidth = 0.025;
+
+    function drawVector(ctx, x1, y1, x2, y2) {
+        // Draw the arrow head
+        var dx = x2 - x1;
+        var dy = y2 - y1;
+        var len = Math.sqrt(dx * dx + dy * dy);
+        var xVec = dx / len;
+        var yVec = dy / len;
+
+        var tipX = x2;
+        var tipY = y2;
+        var endX = tipX - arrowHeadLength * xVec;
+        var endY = tipY - arrowHeadLength * yVec;
+
+        var leftX = endX - arrowHeadWidth * yVec;
+        var leftY = endY + arrowHeadWidth * xVec;
+        var rightX = endX + arrowHeadWidth * yVec;
+        var rightY = endY - arrowHeadWidth * xVec;
+
+        ctx.beginPath();
+        ctx.moveTo(leftMargin + tipX * partSize, topMargin + tipY * partSize);
+        ctx.lineTo(leftMargin + leftX * partSize, topMargin + leftY * partSize);
+        ctx.lineTo(leftMargin + rightX * partSize, topMargin + rightY * partSize);
+        ctx.fill();
+
+        drawLine(ctx, x1, y1, endX, endY);
+    }
+
+    function drawVectors(ctx, alpha) {
+        ctx.fillStyle = 'rgba(225, 0, 76, ' + alpha + ')';
+        ctx.strokeStyle = 'rgba(225, 0, 76, ' + alpha + ')';
+        ctx.lineWidth = radius * 0.8;
+
+        var lastTop = sortedX[0];
+        var lastBot = sortedX[0];
+
+        for (var i = 1; i < sortedX.length - 1; i++) {
+            if (xInTop[i - 1]) {
+                drawVector(ctx, lastTop, topChainY, sortedX[i], topChainY);
+                lastTop = sortedX[i];
+            } else {
+                drawVector(ctx, sortedX[i], botChainY, lastBot, botChainY);
+                lastBot = sortedX[i];
+            }
+        }
+
+        drawVector(ctx, lastTop, topChainY, sortedX[sortedX.length - 1], topChainY);
+        drawVector(ctx, sortedX[sortedX.length - 1], botChainY, lastBot, botChainY);
+
+        var lastLeft = sortedY[0];
+        var lastRight = sortedY[0];
+
+        for (var i = 1; i < sortedY.length - 1; i++) {
+            if (yInLeft[i - 1]) {
+                drawVector(ctx, leftChainX, sortedY[i], leftChainX, lastLeft);
+                lastLeft = sortedY[i];
+            } else {
+                drawVector(ctx, rightChainX, lastRight, rightChainX, sortedY[i]);
+                lastRight = sortedY[i];
+            }
+        }
+
+        drawVector(ctx, leftChainX, sortedY[sortedY.length - 1], leftChainX, lastLeft);
+        drawVector(ctx, rightChainX, lastRight, rightChainX, sortedY[sortedY.length - 1]);
+
+        ctx.lineWidth = 1.0;
+    }
+
+    // Fade-in vectors, fade-out points
+    function drawVecComponents(ctx, time) {
+        if (time < 0.45) {
+            drawVectors(ctx, quadEase(0, 1, time / 0.45));
+            drawDividedPoints(ctx, 1);
+        } else if (time < 0.55) {
+            drawVectors(ctx, 1);
+            drawDividedPoints(ctx, 1);
+        } else {
+            drawVectors(ctx, 1);
+            drawDividedPoints(ctx, quadEase(1, 0, (time - 0.55) / 0.45));
+        }
+    }
+
+    var vectorMatching = [4, 5, 0, 2, 7, 3, 1, 6];
+    var vectorsBaseX = [0.352, 0.414, 0.638, 0.754, 1.209, 1.414, 1.704, 1.9];
+    var vectorsBaseY = [0.418, 0.915, 0.935, 0.251, 0.381, 0.590, 0.424, 0.636];
+    
+    var horizontalVectors = [];
+    var lastTop = sortedX[0];
+    var lastBot = sortedX[0];
+    
+    for (var i = 1; i < sortedX.length - 1; i++) {
+        if (xInTop[i - 1]) {
+            horizontalVectors.push(sortedX[i] - lastTop);
+            lastTop = sortedX[i];
+        } else {
+            horizontalVectors.push(lastBot - sortedX[i]);
+            lastBot = sortedX[i];
+        }
+    }
+    
+    horizontalVectors.unshift(sortedX[sortedX.length - 1] - lastTop);
+    horizontalVectors.push(lastBot - sortedX[sortedX.length - 1]);
+    
+    var verticalVectors = [];
+    var lastLeft = sortedY[0];
+    var lastRight = sortedY[0];
+
+    for (var i = 1; i < sortedY.length - 1; i++) {
+        if (yInLeft[i - 1]) {
+            verticalVectors.push(lastLeft - sortedY[i]);
+            lastLeft = sortedY[i];
+        } else {
+            verticalVectors.push(sortedY[i] - lastRight);
+            lastRight = sortedY[i];
+        }
+    }
+    
+    verticalVectors.unshift(lastLeft - sortedY[sortedY.length - 1]);    
+    verticalVectors.push(sortedY[sortedY.length - 1] - lastRight);
+        
+    // Move the two vectors of each pair to the same base point
+    function drawShuffle(ctx, time) {
+        ctx.fillStyle = 'rgb(225, 0, 76)';
+        ctx.strokeStyle = 'rgb(225, 0, 76)';
+        ctx.lineWidth = radius * 0.8;
+
+        var lastTop = sortedX[0];
+        var lastBot = sortedX[0];
+
+        for (var i = 1; i < sortedX.length - 1; i++) {
+            var vecLength, vecInitialX, vecInitialY;
+            
+            if (xInTop[i - 1]) {
+                vecLength = sortedX[i] - lastTop;
+                vecInitialX = lastTop;
+                vecInitialY = topChainY;
+                lastTop = sortedX[i];
+            } else {
+                vecLength = lastBot - sortedX[i];
+                vecInitialX = sortedX[i];
+                vecInitialY = botChainY;
+                lastBot = sortedX[i];
+            }
+            
+            var x = quadEase(vecInitialX, vectorsBaseX[i], time);
+            var y = quadEase(vecInitialY, vectorsBaseY[i], time);
+            
+            drawVector(ctx, x, y, x + vecLength, y);
+        }
+        
+        drawVector(ctx, quadEase(lastTop, vectorsBaseX[0], time), quadEase(topChainY, vectorsBaseY[0], time), quadEase(lastTop, vectorsBaseX[0], time) + sortedX[sortedX.length - 1] - lastTop, quadEase(topChainY, vectorsBaseY[0], time));
+        drawVector(ctx, quadEase(sortedX[sortedX.length - 1], vectorsBaseX[sortedX.length - 1], time), quadEase(botChainY, vectorsBaseY[sortedX.length - 1], time), quadEase(sortedX[sortedX.length - 1], vectorsBaseX[sortedX.length - 1], time) + lastBot - sortedX[sortedX.length - 1], quadEase(botChainY, vectorsBaseY[sortedX.length - 1], time));
+
+        var lastLeft = sortedY[0];
+        var lastRight = sortedY[0];
+
+        for (var i = 1; i < sortedY.length - 1; i++) {
+            var vecLength, vecInitialX, vecInitialY;
+            
+            if (yInLeft[i - 1]) {
+                vecLength = lastLeft - sortedY[i];
+                vecInitialX = leftChainX;
+                vecInitialY = sortedY[i];
+                lastLeft = sortedY[i];
+            } else {
+                vecLength = sortedY[i] - lastRight;
+                vecInitialX = rightChainX;
+                vecInitialY = lastRight;
+                lastRight = sortedY[i];
+            }
+            
+            var x = quadEase(vecInitialX, vectorsBaseX[vectorMatching[i]], time);
+            var y = quadEase(vecInitialY, vectorsBaseY[vectorMatching[i]], time);
+            
+            drawVector(ctx, x, y, x, y + vecLength);
+        }
+        
+        drawVector(ctx, quadEase(leftChainX, vectorsBaseX[vectorMatching[0]], time), quadEase(sortedY[sortedY.length - 1], vectorsBaseY[vectorMatching[0]], time), quadEase(leftChainX, vectorsBaseX[vectorMatching[0]], time), quadEase(sortedY[sortedY.length - 1], vectorsBaseY[vectorMatching[0]], time) + lastLeft - sortedY[sortedY.length - 1]);
+        drawVector(ctx, quadEase(rightChainX, vectorsBaseX[vectorMatching[sortedX.length - 1]], time), quadEase(lastRight, vectorsBaseY[vectorMatching[sortedX.length - 1]], time), quadEase(rightChainX, vectorsBaseX[vectorMatching[sortedX.length - 1]], time), quadEase(lastRight, vectorsBaseY[vectorMatching[sortedX.length - 1]], time) + sortedY[sortedY.length - 1] - lastRight);
+
+        ctx.lineWidth = 1.0;
+    }
+
+    function drawCombine(ctx, time) {
+        // 1. Duplicate vectors to form rectangle
+        // 2. Fade in diagonal
+        // 3. Fade out original vectors
+        
+        ctx.lineWidth = radius * 0.8;
+        
+        // Draw original vectors
+        var alphaOriginal = (time < 0.75 ? 1 : 1 - 16 * (time - 0.75) * (time - 0.75))
+        ctx.fillStyle = 'rgba(225, 0, 76, ' + alphaOriginal + ')';
+        ctx.strokeStyle = 'rgba(225, 0, 76, ' + alphaOriginal + ')';
+        
+        for (var i = 0; i < sortedX.length; i++) {
+            j = vectorMatching[i];
+            drawVector(ctx, vectorsBaseX[j], vectorsBaseY[j], vectorsBaseX[j] + horizontalVectors[j], vectorsBaseY[j]);
+            drawVector(ctx, vectorsBaseX[j], vectorsBaseY[j], vectorsBaseX[j], vectorsBaseY[j] + verticalVectors[i]);
+        }
+        
+        // Duplicate original vectors to form rectangle
+        var alphaNew = (time < 0.25 ? 0.5 - 8 * (0.25 - time) * (0.25 - time) : alphaOriginal * 0.5);
+        ctx.fillStyle = 'rgba(225, 0, 76, ' + alphaNew + ')';
+        ctx.strokeStyle = 'rgba(225, 0, 76, ' + alphaNew + ')';
+        
+        for (var i = 0; i < sortedX.length; i++) {
+            j = vectorMatching[i];
+            
+            var horY = quadEase(vectorsBaseY[j], vectorsBaseY[j] + verticalVectors[i], time * 4);
+            var vertX = quadEase(vectorsBaseX[j], vectorsBaseX[j] + horizontalVectors[j], time * 4);            
+            
+            drawVector(ctx, vectorsBaseX[j], horY, vectorsBaseX[j] + horizontalVectors[j], horY);
+            drawVector(ctx, vertX, vectorsBaseY[j], vertX, vectorsBaseY[j] + verticalVectors[i]);
+        }
+        
+        // Fade in diagonals
+        var alphaDiag = (time < 0.25 ? 0 : (time > 0.75 ? 1 : 1 - 4 * (0.75 - time) * (0.75 - time)));
+        ctx.fillStyle = 'rgba(11, 97, 164, ' + alphaDiag + ')';
+        ctx.strokeStyle = 'rgba(11, 97, 164, ' + alphaDiag + ')';
+        
+        for (var i = 0; i < sortedX.length; i++) {
+            j = vectorMatching[i];
+            drawVector(ctx, vectorsBaseX[j], vectorsBaseY[j], vectorsBaseX[j] + horizontalVectors[j], vectorsBaseY[j] + verticalVectors[i]);
+        }
+        
+        ctx.lineWidth = 1.0;
+    }
+
+    //for (var i = 0; i < sortedX.length; i++) {
+    //    var angle = Math.atan2(verticalVectors[i], horizontalVectors[vectorMatching[i]]);
+    //    console.log('angle: ' + angle);
+    //}
+    var angleSorted = [0, 1, 2, 3, 4, 5, 6, 7].sort(function(a, b) {
+        var angle1 = Math.atan2(verticalVectors[a], horizontalVectors[vectorMatching[a]]);
+        var angle2 = Math.atan2(verticalVectors[b], horizontalVectors[vectorMatching[b]]);
+        return angle1 - angle2;
+    });
+    //console.log('Angle sorted: ' + angleSorted);
+    //for (var ii = 0; ii < sortedX.length; ii++) {
+    //    var i = angleSorted[ii];
+    //    var angle = Math.atan2(verticalVectors[i], horizontalVectors[vectorMatching[i]]);
+    //    console.log('ii: ' + ii + ' i: ' + i + ' hor: ' + horizontalVectors[vectorMatching[i]] + ' vert: ' + verticalVectors[i] + 'angle: ' + angle);
+    //}
+
+    function drawAngleSort(ctx, time) {
+        // 1. Bring vectors together
+        // 2. Flash one by one
+        ctx.lineWidth = radius * 0.8;
+        
+        for (var ii = 0; ii < sortedX.length; ii++) {
+            var i = angleSorted[ii];
+            var j = vectorMatching[i];
+            
+            if (time < 0.5 || ii != Math.floor((time - 0.5) * 2 * sortedX.length)) {
+                ctx.fillStyle = 'rgb(11, 97, 164)';
+                ctx.strokeStyle = 'rgb(11, 97, 164)';
+            } else {
+                var t = 2 * sortedX.length * (time - 0.5) - ii;
+                var r = Math.round(quadEase(102, 11, t));
+                var g = Math.round(quadEase(163, 97, t));
+                var b = Math.round(quadEase(210, 164, t));
+                ctx.fillStyle = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+                ctx.strokeStyle = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+            }
+            
+            var length = Math.sqrt(horizontalVectors[j] * horizontalVectors[j] + verticalVectors[i] * verticalVectors[i]);
+            
+            var x = quadEase(vectorsBaseX[j], 1 + 0.1 * horizontalVectors[j] / length, 2 * time);
+            var y = quadEase(vectorsBaseY[j], 0.5 + 0.1 * verticalVectors[i] / length, 2 * time);
+            
+            drawVector(ctx, x, y, x + horizontalVectors[j], y + verticalVectors[i]);
+        }
+        
+        ctx.lineWidth = 1.0;
+    }
+
+    var start = 0;
+    for (var i = 0; i < start; i++) {
+        angleSorted.push(angleSorted.shift());
+    }
+    
+    var polygonX = [1.7];
+    var polygonY = [1.0];
+    
+    for (var ii = 0; ii < sortedX.length - 1; ii++) {
+        var i = angleSorted[ii];
+        var j = vectorMatching[i];
+
+        polygonX.push(polygonX[ii] + horizontalVectors[j]);
+        polygonY.push(polygonY[ii] + verticalVectors[i]);
+    }
+
+    function drawAssemble(ctx, time) {
+        // Move vectors one-by-one
+        ctx.lineWidth = radius * 0.8;
+        ctx.fillStyle = 'rgb(11, 97, 164)';
+        ctx.strokeStyle = 'rgb(11, 97, 164)';
+        
+        var moving = Math.floor(time * sortedX.length);
+        
+        for (var ii = 0; ii < sortedX.length; ii++) {
+            var i = angleSorted[ii];
+            var j = vectorMatching[i];
+            
+            var x, y;
+            
+            if (ii < moving) {
+                // Post-move
+                x = polygonX[ii];
+                y = polygonY[ii];
+            } else {
+                var length = Math.sqrt(horizontalVectors[j] * horizontalVectors[j] + verticalVectors[i] * verticalVectors[i]);
+                var origX = 1 + 0.1 * horizontalVectors[j] / length;
+                var origY = 0.5 + 0.1 * verticalVectors[i] / length;
+            
+                if (ii === moving) {
+                    // Move
+                    var t = sortedX.length * time - ii;
+                    x = quadEase(origX, polygonX[ii], t);
+                    y = quadEase(origY, polygonY[ii], t);
+                } else {
+                    // Pre-move
+                    x = origX;
+                    y = origY;
+                }
+            }
+            
+            drawVector(ctx, x, y, x + horizontalVectors[j], y + verticalVectors[i]);
+        }
+        
+        ctx.lineWidth = 1.0;
+    }
+
+    var minX = polygonX[0], minY = polygonY[0], maxX = polygonX[0], maxY = polygonY[0];
+    for (var i = 1; i < sortedX.length; i++) {
+        minX = Math.min(minX, polygonX[i]);
+        maxX = Math.max(maxX, polygonX[i]);
+        minY = Math.min(minY, polygonY[i]);
+        maxY = Math.max(maxY, polygonY[i]);
+    }
+    
+    var bbOffsetX = 0.1;
+    var bbOffsetY = 0;
+    var bbMinX = sortedX[0] + bbOffsetX;
+    var bbMaxX = sortedX[sortedX.length - 1] + bbOffsetX;
+    var bbMinY = sortedY[0] + bbOffsetY;
+    var bbMaxY = sortedY[sortedY.length - 1] + bbOffsetY;
+
+    function drawTranslate(ctx, time) {
+        // Fade in BB
+        // Move
+        // Fade out BB
+        ctx.lineWidth = radius * 0.2;
+        
+        var alphaBB = (time < 0.25 ? 1 - 16 * (0.25 - time) * (0.25 - time) : (time > 0.75 ? 1 - 16 * (time - 0.75) * (time - 0.75) : 1));
+        ctx.strokeStyle = 'rgba(225, 0, 76, ' + alphaBB + ')';
+        
+        drawLine(ctx, bbMinX, bbMinY, bbMinX, bbMaxY);
+        drawLine(ctx, bbMinX, bbMaxY, bbMaxX, bbMaxY);
+        drawLine(ctx, bbMaxX, bbMaxY, bbMaxX, bbMinY);
+        drawLine(ctx, bbMaxX, bbMinY, bbMinX, bbMinY);
+        
+        ctx.lineWidth = radius * 0.8;
+        ctx.fillStyle = 'rgb(11, 97, 164)';
+        ctx.strokeStyle = 'rgb(11, 97, 164)';
+        
+        for (var ii = 0; ii < sortedX.length; ii++) {
+            var i = angleSorted[ii];
+            var j = vectorMatching[i];
+                
+            var x = quadEase(polygonX[ii], polygonX[ii] + (bbMinX - minX), 2 * (time - 0.25));
+            var y = quadEase(polygonY[ii], polygonY[ii] + (bbMinY - minY), 2 * (time - 0.25));
+            
+            drawVector(ctx, x, y, x + horizontalVectors[j], y + verticalVectors[i]);
+        }
+        
+        ctx.lineWidth = 1.0;
+    }
+});
+</script>
