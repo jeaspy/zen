@@ -1,4 +1,4 @@
-baseURL = "https://jeas.io/"
+baseURL = "https://jeas.fr/"
 languageCode = "fr-fr"
 defaultContentLanguage = "fr"
 title = "Jeas - Programmes en Python"
