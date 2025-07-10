@@ -11,7 +11,7 @@ theme = "aether"
     description = "Programmes en langage Python avec NumPy et Matplotlib. Pi, méthode de Monte-Carlo, stéganographie."
     #bgimg = "img/hip-square.png"
     #bgimg = "img/pink_rice.png"
-    bgimg = "img/vintage-concrete.png"
+    #bgimg = "img/vintage-concrete.png"
   [markup.goldmark.renderer]
     unsafe = true
 
